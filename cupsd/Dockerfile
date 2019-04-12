@@ -3,9 +3,10 @@ ARG MAINTAINER
 FROM ${BASE_USER}/debian:testing
 MAINTAINER $MAINTAINER
 
+RUN add-apt-repository ppa:ubuntu-lxc/lxd-stable
 # Install Packages (basic tools, cups, basic drivers, HP drivers)
-RUN apt-get update \
-&& apt-get install -y \
+RUN apt-get update -qq -y \
+&& apt-get install -qq -y \
   sudo \
   whois \
   cups \
@@ -18,8 +19,41 @@ RUN apt-get update \
   hpijs-ppds \
   hp-ppd \
   hplip \
-&& apt-get clean \
+  python-cups \
+  inotify-tools \
+  libcups2 \
+  libavahi-client3 \
+  avahi-daemon \
+  avahi-utils \
+  libsnmp30 \
+  build-essential \
+  libcups2-dev \
+  libavahi-client-dev \
+  git \
+  bzr \
+&& apt-get -qq -y autoclean \
+&& apt-get -qq -y autoremove \
+&& apt-get -qq -y clean \
 && rm -rf /var/lib/apt/lists/*
+
+ADD * /tmp/
+RUN chmod +x /tmp/*.sh \
+&& /tmp/install.sh \
+&& /tmp/make-avahi-autostart.sh \
+
+# Create var/run/dbus, Disbale some cups backend that are unusable within a container, Clean install files
+RUN mkdir -p /var/run/dbus \
+&& mv -f /usr/lib/cups/backend/parallel /usr/lib/cups/backend-available/ || true \
+&& mv -f /usr/lib/cups/backend/serial /usr/lib/cups/backend-available/ || true \
+&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* || true
+
+
+#########################################
+##         EXPORTS AND VOLUMES         ##
+#########################################
+# Export volumes
+VOLUME /config /etc/cups/ /var/log/cups /var/spool/cups /var/cache/cups /var/run/dbus
+EXPOSE 631
 
 # Add user and disable sudo password checking
 RUN useradd \
