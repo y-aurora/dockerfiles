@@ -47,7 +47,10 @@ RUN mkdir -p /var/run/dbus \
 && mv -f /usr/lib/cups/backend/serial /usr/lib/cups/backend-available/ || true \
 && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* || true
 
-
+RUN systemctl enable avahi-daemon \
+&& systemctl start avahi-daemon \
+&& systemctl enable cupsd \
+&& systemctl start cupsd
 #########################################
 ##         EXPORTS AND VOLUMES         ##
 #########################################
