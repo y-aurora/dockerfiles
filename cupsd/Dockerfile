@@ -38,8 +38,7 @@ RUN apt-get update -qq -y \
 
 ADD * /tmp/
 RUN chmod +x /tmp/*.sh \
-&& /tmp/install.sh \
-&& /tmp/make-avahi-autostart.sh \
+&& /tmp/install.sh 
 
 # Create var/run/dbus, Disbale some cups backend that are unusable within a container, Clean install files
 RUN mkdir -p /var/run/dbus \
