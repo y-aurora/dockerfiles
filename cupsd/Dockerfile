@@ -1,7 +1,5 @@
-ARG BASE_USER
-ARG MAINTAINER
-FROM ${BASE_USER}/debian:testing
-MAINTAINER $MAINTAINER
+FROM olbat/debian:testing
+MAINTAINER devel@olbat.net
 
 RUN add-apt-repository ppa:ubuntu-lxc/lxd-stable
 # Install Packages (basic tools, cups, basic drivers, HP drivers)
