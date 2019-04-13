@@ -1,7 +1,7 @@
 FROM olbat/debian:testing
 MAINTAINER devel@olbat.net
 
-RUN add-apt-repository ppa:ubuntu-lxc/lxd-stable
+#RUN add-apt-repository ppa:ubuntu-lxc/lxd-stable
 # Install Packages (basic tools, cups, basic drivers, HP drivers)
 RUN apt-get update -qq -y \
 && apt-get install -qq -y \
