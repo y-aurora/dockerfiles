@@ -69,3 +69,14 @@ inotifywait -m /config/cups/ppd -e create -e moved_to -e close_write|
 #rm -rf /avahi/AirPrint*
 #EOT
 #chmod +x /etc/service/air_print/*
+mkdir /config/gcp
+rm -f /tmp/cloud-print-connector-monitor.sock
+if [ ! -f "/etc/gcp/gcp-cups-connector.config.json" ]; then
+	cd /config/gcp && gcp-connector-util init --local-printing-enable --cloud-printing-enable=false
+fi
+if [ -r /config/gcp/gcp-cups-connector.config.json ]
+  then
+    exec gcp-cups-connector --config-filename /config/gcp/gcp-cups-connector.config.json
+  else
+    exec gcp-cups-connector
+fi
