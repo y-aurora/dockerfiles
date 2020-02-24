@@ -29,6 +29,7 @@ RUN apt-get update -qq -y \
   libavahi-client-dev \
   git \
   bzr \
+  google-cloud-print-connector \
 && apt-get -qq -y autoclean \
 && apt-get -qq -y autoremove \
 && apt-get -qq -y clean \
