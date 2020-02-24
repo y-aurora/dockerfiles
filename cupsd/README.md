@@ -5,14 +5,18 @@ Docker image including CUPS print server and printing drivers (installed from th
 
 ## Run the Cups server
 ```bash
-docker run -d -p 631:631 -v /var/run/dbus:/var/run/dbus --name cupsd olbat/cupsd
+docker run -d -p 631:631 --name=cups \
+-e CUPS_USER_ADMIN=admin \
+-e CUPS_USER_PASSWORD=admin \
+-v /volume1/docker/cups/config:/config \
+-v /volume1/docker/cups/avahi:/avahi --name cupsd yaurora/cupsd
 ```
 __Note__: The admin user/password for the Cups server is `print`/`print`
 
 ## Add printers to the Cups server
 1. Connect to the Cups server at [http://127.0.0.1:631](http://127.0.0.1:631)
 2. Add printers: Administration > Printers > Add Printer
-3. (The user/password is `print`/`print`)
+3. (The user/password is the value you give in the docker run command)
 
 ## Configure Cups client on your machine
 1. Install the `cups-client` package
