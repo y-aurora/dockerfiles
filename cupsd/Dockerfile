@@ -57,12 +57,13 @@ EXPOSE 631
 
 # Add user and disable sudo password checking
 RUN useradd \
-  --groups=sudo,lp,lpadmin \
-  --create-home \
+  --system \
+  --groups=sudo,lp,lpadmin,root \
+  --no-create-home \
   --home-dir=/home/print \
   --shell=/bin/bash \
-  --password=$(mkpasswd print) \
-  print \
+  --password=$(mkpasswd $CUPS_USER_PASSWORD) \
+  $CUPS_USER_ADMIN \
 && sed -i '/%sudo[[:space:]]/ s/ALL[[:space:]]*$/NOPASSWD:ALL/' /etc/sudoers
 
 # Configure the service's to be reachable
